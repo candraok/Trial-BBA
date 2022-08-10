@@ -1,0 +1,202 @@
+{
+	"info": {
+		"_postman_id": "84b39098-8589-432c-b9e3-1cda32e4592a",
+		"name": "Daily Check - 2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22613010"
+	},
+	"item": [
+		{
+			"name": "Retrieves flag definitions that correspond to the requested flag definition IDs.",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"if (pm.response.code != 200) {\r",
+							"\tvar jsonData = pm.response.json();\r",
+							"\tvar message = jsonData.message;\r",
+							"\tvar code = jsonData.code;\r",
+							"\tpm.environment.set(\"Respon\", pm.environment.get(\"Respon\") + \"\\n:x: Failed, Respon Code : \" + pm.response.code + \" \" + pm.response.status + \" \" +\r",
+							"\t\t\"| Message : \" + message + \" \" + \"| Code : \" + code + \" \" + \"| API Collection Name : Retrieves flag definitions that correspond to the requested flag definition IDs.\");\r",
+							"} else {\r",
+							"\tpm.environment.set(\"Respon\", pm.environment.get(\"Respon\") + \"\\n:white_check_mark: Succes, Respon Code : \" + pm.response.code + \" \" + pm.response.status + \" \" + \"| API Collection Name : Retrieves flag definitions that correspond to the requested flag definition IDs.\");\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Auth-Token",
+						"value": "{{access_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{core_api_base}}/v1/flag-definitions:batchGet?ids=ACCOUNT_CLOSURE_050&ids=INTEREST_AND_TAX_BLOCKING_051&ids=ACCOUNT_FEE_BLOCKING_052",
+					"host": [
+						"{{core_api_base}}"
+					],
+					"path": [
+						"v1",
+						"flag-definitions:batchGet"
+					],
+					"query": [
+						{
+							"key": "ids",
+							"value": "ACCOUNT_CLOSURE_050"
+						},
+						{
+							"key": "ids",
+							"value": "INTEREST_AND_TAX_BLOCKING_051"
+						},
+						{
+							"key": "ids",
+							"value": "ACCOUNT_FEE_BLOCKING_052"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Gets a Postings API Client for the given id",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"\tpm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"/* Script Untuk Posting to Slack */\r",
+							"if (pm.response.code != 200) {\r",
+							"\tvar jsonData = pm.response.json();\r",
+							"\tvar message = jsonData.message;\r",
+							"\tvar code = jsonData.code;\r",
+							"\tpm.environment.set(\"Respon\", \"\\n:x: Failed, Respon Code : \" + pm.response.code + \" \" + pm.response.status + \" \" + \r",
+							"\t\t\"| Message : \" + message + \" \" +\"| Code : \"+ code +\" \"+\"| API Collection Name : Gets a Postings API Client for the given id\");\r",
+							"}else{\r",
+							"\tpm.environment.set(\"Respon\",\"\\n:white_check_mark: Succes, Respon Code : \" + pm.response.code + \" \" + pm.response.status +\" \" + \"| API Collection Name : Gets a Postings API Client for the given id\");\r",
+							"}\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "X-Auth-Token",
+						"type": "text",
+						"value": "{{access_token}}"
+					},
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{core_api_base}}/v1/postings-api-clients/AsyncCreatePostingInstructionBatch_3",
+					"host": [
+						"{{core_api_base}}"
+					],
+					"path": [
+						"v1",
+						"postings-api-clients",
+						"AsyncCreatePostingInstructionBatch_3"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"// Strip JSON Comments",
+					"const rawData = pm.request.body.toString();",
+					"const strippedData = rawData.replace(/\\\\\"|\"(?:\\\\\"|[^\"])*\"|(\\/\\/.*|\\/\\*[\\s\\S]*?\\*\\/)/g, (m, g) => g ? \"\" : m)",
+					"",
+					"pm.request.body.update(strippedData);",
+					"",
+					"",
+					"var count_1 =",
+					"parseInt(pm.collectionVariables.get(\"count\"));",
+					"var final_count = count_1+1",
+					"pm.collectionVariables.set(\"count\",final_count);",
+					"",
+					"",
+					"pm.environment.unset(\"Respon\");"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "count",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "Respon",
+			"value": ""
+		},
+		{
+			"key": "Respon_1",
+			"value": ""
+		},
+		{
+			"key": "storeError",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
